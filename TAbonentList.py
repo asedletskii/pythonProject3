@@ -16,10 +16,22 @@ class TAbonentList:
         self.contacts.clear()
     
     def find(self, name, number):
-        for i, abonent in enumerate(self.contacts):
-            if name.lower() in abonent.name.lower() or number in abonent.number:  # Поиск по части строки
-                return i
-        return -1
+        found_contacts = []  # Список для хранения найденных контактов
+        
+        for abonent in self.contacts:
+            # Ищем совпадения по имени или номеру
+            if name == "":
+                if (number in abonent.number):
+                    found_contacts.append(abonent)
+            elif number == "":
+                if (name.lower() in abonent.name.lower()):
+                    found_contacts.append(abonent)
+            else:
+                if (name.lower() in abonent.name.lower()) and (number in abonent.number):
+                    found_contacts.append(abonent)
+        
+        return found_contacts
+
 
     
     def to_list(self):

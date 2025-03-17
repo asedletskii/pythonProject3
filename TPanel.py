@@ -206,10 +206,22 @@ class TPanel(QMainWindow):
                 self.number_input.clear()
     
     def find_contact(self):
-        name = self.name_input.text()
-        number = self.number_input.text()
-        index = self.control.find_contact(name, number)
-        if index >= 0:
-            QMessageBox.information(self, "Найдено", f"Контакт найден: {self.control.abonent_list.contacts[index].name}, {self.control.abonent_list.contacts[index].number}")
+        name = self.name_input.text().strip()
+        number = self.number_input.text().strip()
+        
+        if not name and not number:
+            QMessageBox.warning(self, "Ошибка", "Введите имя или номер для поиска.")
+            return
+        
+        found_contacts = self.control.find_contact(name, number)  # Получаем список найденных контактов
+        
+        if found_contacts:
+            # Формируем строку с результатами поиска
+            result_text = "Найдено контактов:\n"
+            for contact in found_contacts:
+                result_text += f"{contact.name}, {contact.number}\n"
+            
+            # Показываем все найденные контакты в окне информации
+            QMessageBox.information(self, "Результаты поиска", result_text)
         else:
             QMessageBox.warning(self, "Не найдено", "Контакт не найден!")
